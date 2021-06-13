@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "411068534853",
+    "project_id": "yoga-posture-detection",
+    "storage_bucket": "yoga-posture-detection.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411068534853:android:01c72083c1d3f69796132c",
+        "android_client_info": {
+          "package_name": "com.example.yoga_posture_detection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411068534853-bs2opeh1eoos54po2cdgl5649brcfac5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPxwzzPGXrQYt1WyQJQM2R-4GQHiRU8i8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411068534853-bs2opeh1eoos54po2cdgl5649brcfac5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
