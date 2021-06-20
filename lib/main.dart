@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:yoga_posture_detection/screens/authentication/register.dart';
+import 'package:yoga_posture_detection/net/flutterfire.dart';
+// import 'package:yoga_posture_detection/screens/authentication/phone.dart';
+// import 'package:yoga_posture_detection/screens/authentication/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Roboto',
       ),
-      home: Regsiter(),
+      home: AuthService().handleAuth(),
     );
   }
 }
