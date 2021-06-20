@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yoga_posture_detection/net/flutterfire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:yoga_posture_detection/screens/widgets/button.dart';
+import 'package:yoga_posture_detection/screens/widgets/textfield.dart';
 
 class PhoneAuth extends StatefulWidget {
   const PhoneAuth({Key? key}) : super(key: key);
@@ -17,23 +19,6 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
   late String verificationId;
   bool codeSent = false;
-
-  late FocusNode otpFocusNode;
-
-  @override
-  void initState() {
-    super.initState();
-
-    otpFocusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    // Clean up the focus node when the Form is disposed.
-    otpFocusNode.dispose();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,68 +60,33 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          TextFormField(
-                            validator: (value) {
-                              return value?.length == 10
-                                  ? null
-                                  : 'Enter Valid Phone Number';
-                            },
-                            keyboardType: TextInputType.number,
-                            autofocus: true,
-                            controller: _numberField,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0)),
-                                borderSide:
-                                    BorderSide(color: Color(0xffC4C4C4)),
-                              ),
-                              fillColor: Color(0xffC4C4C4),
-                              filled: true,
-                              hintText: "Mobile Number",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                              ),
-                              enabled: !codeSent,
-                            ),
-                          ),
+                          TextFormFieldWidget(
+                              validator: (value) {
+                                return value?.length == 10
+                                    ? null
+                                    : 'Enter Valid Phone Number';
+                              },
+                              keyboardType: TextInputType.number,
+                              autofocus: true,
+                              controller: _numberField,
+                              isEnabled: !codeSent,
+                              hintText: "Mobile Number"),
                           SizedBox(
                             height: 15.0,
                           ),
                           codeSent
                               ? (Column(
                                   children: [
-                                    TextFormField(
+                                    TextFormFieldWidget(
                                       validator: (value) {
                                         return value?.length == 6
                                             ? null
                                             : 'Please Enter a 6 digit OTP';
                                       },
-                                      controller: _smsCode,
                                       keyboardType: TextInputType.number,
-                                      focusNode: otpFocusNode,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20.0)),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20.0)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xffC4C4C4)),
-                                        ),
-                                        fillColor: Color(0xffC4C4C4),
-                                        filled: true,
-                                        hintText: "OTP",
-                                        hintStyle: TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
+                                      controller: _smsCode,
+                                      hintText: "OTP",
+                                      autofocus: codeSent,
                                     ),
                                     SizedBox(
                                       height: 15.0,
@@ -144,65 +94,45 @@ class _PhoneAuthState extends State<PhoneAuth> {
                                   ],
                                 ))
                               : (Container()),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                print("valid");
-                                if (codeSent) {
-                                  bool result = await AuthService()
-                                      .signInWithOTP(
-                                          _smsCode.text, verificationId);
-                                  if (!result) {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            "Incorrect OTP... Please Try Again",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.BOTTOM,
-                                        backgroundColor:
-                                            Color.fromRGBO(29, 28, 28, 0.5),
-                                        timeInSecForIosWeb: 1,
-                                        fontSize: 16.0);
-                                  } else {
-                                    Fluttertoast.showToast(
-                                        msg: "Login Successful!!!",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.BOTTOM,
-                                        backgroundColor:
-                                            Color.fromRGBO(29, 28, 28, 0.5),
-                                        timeInSecForIosWeb: 1,
-                                        fontSize: 16.0);
-                                  }
-                                } else {
-                                  verifyPhone('+91' + _numberField.text);
-                                  otpFocusNode.requestFocus();
-                                }
-                              }
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: codeSent
-                                  ? Text(
-                                      "LOGIN",
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                      ),
-                                    )
-                                  : Text(
-                                      "Generate OTP",
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: Color(0xff282B24),
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0)),
-                              ),
-                            ),
-                          ),
+                          codeSent
+                              ? (ButtonWidget(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      bool result = await AuthService()
+                                          .signInWithOTP(
+                                              _smsCode.text, verificationId);
+                                      if (!result) {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Incorrect OTP... Please Try Again",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            backgroundColor:
+                                                Color.fromRGBO(29, 28, 28, 0.5),
+                                            timeInSecForIosWeb: 1,
+                                            fontSize: 16.0);
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: "Login Successful!!!",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            backgroundColor:
+                                                Color.fromRGBO(29, 28, 28, 0.5),
+                                            timeInSecForIosWeb: 1,
+                                            fontSize: 16.0);
+                                      }
+                                    }
+                                  },
+                                  text: "LOGIN",
+                                ))
+                              : (ButtonWidget(
+                                  onPressed: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      verifyPhone('+91' + _numberField.text);
+                                    }
+                                  },
+                                  text: "Generate OTP",
+                                )),
                         ],
                       ),
                     ),
