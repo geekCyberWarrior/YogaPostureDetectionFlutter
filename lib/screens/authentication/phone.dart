@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yoga_posture_detection/net/flutterfire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:yoga_posture_detection/screens/homeView.dart';
 import 'package:yoga_posture_detection/screens/widgets/button.dart';
 import 'package:yoga_posture_detection/screens/widgets/textfield.dart';
 
@@ -13,12 +14,13 @@ class PhoneAuth extends StatefulWidget {
 }
 
 class _PhoneAuthState extends State<PhoneAuth> {
-  TextEditingController _numberField = TextEditingController();
-  TextEditingController _smsCode = TextEditingController();
+  TextEditingController _emailNumberField = TextEditingController();
+  TextEditingController _otpPasswordField = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   late String verificationId;
   bool codeSent = false;
+  bool isEmail = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,78 +63,36 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       child: Column(
                         children: [
                           TextFormFieldWidget(
-                              validator: (value) {
-                                return value?.length == 10
-                                    ? null
-                                    : 'Enter Valid Phone Number';
-                              },
-                              keyboardType: TextInputType.number,
+                              validator: inputValidator,
                               autofocus: true,
-                              controller: _numberField,
-                              isEnabled: !codeSent,
-                              hintText: "Mobile Number"),
+                              controller: _emailNumberField,
+                              isEnabled: !(isEmail || codeSent),
+                              hintText: "email id / mobile number"),
                           SizedBox(
                             height: 15.0,
                           ),
-                          codeSent
-                              ? (Column(
+                          isEmail || codeSent
+                              ? Column(
                                   children: [
                                     TextFormFieldWidget(
-                                      validator: (value) {
-                                        return value?.length == 6
-                                            ? null
-                                            : 'Please Enter a 6 digit OTP';
-                                      },
-                                      keyboardType: TextInputType.number,
-                                      controller: _smsCode,
-                                      hintText: "OTP",
-                                      autofocus: codeSent,
+                                      validator: otpPasswordValidator,
+                                      keyboardType: codeSent
+                                          ? TextInputType.number
+                                          : TextInputType.text,
+                                      controller: _otpPasswordField,
+                                      hintText: isEmail ? "Password" : "OTP",
+                                      autofocus: true,
                                     ),
                                     SizedBox(
                                       height: 15.0,
                                     ),
                                   ],
-                                ))
-                              : (Container()),
-                          codeSent
-                              ? (ButtonWidget(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      bool result = await AuthService()
-                                          .signInWithOTP(
-                                              _smsCode.text, verificationId);
-                                      if (!result) {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                "Incorrect OTP... Please Try Again",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.BOTTOM,
-                                            backgroundColor:
-                                                Color.fromRGBO(29, 28, 28, 0.5),
-                                            timeInSecForIosWeb: 1,
-                                            fontSize: 16.0);
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg: "Login Successful!!!",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.BOTTOM,
-                                            backgroundColor:
-                                                Color.fromRGBO(29, 28, 28, 0.5),
-                                            timeInSecForIosWeb: 1,
-                                            fontSize: 16.0);
-                                      }
-                                    }
-                                  },
-                                  text: "LOGIN",
-                                ))
-                              : (ButtonWidget(
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      verifyPhone('+91' + _numberField.text);
-                                    }
-                                  },
-                                  text: "Generate OTP",
-                                )),
+                                )
+                              : Container(),
+                          ButtonWidget(
+                            onPressed: loginUser,
+                            text: "LOGIN",
+                          ),
                         ],
                       ),
                     ),
@@ -144,6 +104,113 @@ class _PhoneAuthState extends State<PhoneAuth> {
         ),
       ),
     );
+  }
+
+  void loginUser() async {
+    if (_formKey.currentState!.validate()) {
+      if (isEmail) {
+        print('-------------THIS IS IT---------------');
+        signInWithEmailPassword();
+      } else if (codeSent) {
+        signInWithPhone();
+      } else {
+        print('beginning....');
+        String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+        RegExp regex = new RegExp(pattern);
+        if (regex.hasMatch(_emailNumberField.text)) {
+          generateOTP();
+        } else {
+          print('email it is...');
+          setState(() {
+            isEmail = true;
+          });
+        }
+      }
+    }
+  }
+
+  void signInWithPhone() async {
+    if (_formKey.currentState!.validate()) {
+      bool result = await AuthService()
+          .signInWithOTP(_otpPasswordField.text, verificationId);
+      if (!result) {
+        Fluttertoast.showToast(
+            msg: "Incorrect OTP... Please Try Again",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Color.fromRGBO(29, 28, 28, 0.5),
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Login Successful!!!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Color.fromRGBO(29, 28, 28, 0.5),
+            timeInSecForIosWeb: 1,
+            fontSize: 16.0);
+      }
+    }
+  }
+
+  void signInWithEmailPassword() async {
+    bool shouldNavigate =
+        await signIn(_emailNumberField.text, _otpPasswordField.text);
+    if (shouldNavigate) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
+      Fluttertoast.showToast(
+          msg: "Login successful!!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Color.fromRGBO(29, 28, 28, 0.5),
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Incorrect Credentials",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Color.fromRGBO(29, 28, 28, 0.5),
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0);
+    }
+  }
+
+  void generateOTP() async {
+    if (_formKey.currentState!.validate()) {
+      verifyPhone('+91' + _emailNumberField.text);
+    }
+  }
+
+  String? inputValidator(String? value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regex = new RegExp(pattern);
+    if (value!.length == 0) {
+      return 'Please Enter Credentials';
+    } else if (regex.hasMatch(value)) {
+      return null;
+    }
+    pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Please Enter Correct Email';
+    }
+    return null;
+  }
+
+  String? otpPasswordValidator(String? value) {
+    return isEmail
+        ? null
+        : value?.length == 6
+            ? null
+            : 'Please Enter a 6 digit OTP';
+    // return null;
   }
 
   Future<void> verifyPhone(String phoneNo) async {

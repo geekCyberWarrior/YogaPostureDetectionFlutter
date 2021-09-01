@@ -6,6 +6,7 @@ class TextFormFieldWidget extends StatefulWidget {
   final bool autofocus;
   final TextEditingController controller;
   final bool isEnabled;
+  final bool obscureText;
   final TextInputAction actionKeyboard;
   final String hintText;
   // final FocusNode focusNode;
@@ -22,6 +23,7 @@ class TextFormFieldWidget extends StatefulWidget {
       this.autofocus = false,
       required this.controller,
       this.isEnabled = true,
+      this.obscureText = false,
       this.actionKeyboard = TextInputAction.next,
       // required this.focusNode,
       // required this.prefixIcon,
@@ -31,7 +33,7 @@ class TextFormFieldWidget extends StatefulWidget {
       // required this.parametersValidate,
       // required this.onSubmitField,
       // required this.onFieldTap,
-      required this.hintText});
+      this.hintText = ''});
 
   @override
   _TextFormFieldWidgetState createState() => _TextFormFieldWidgetState();
@@ -45,6 +47,11 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       keyboardType: widget.keyboardType,
       autofocus: widget.autofocus,
       controller: widget.controller,
+      style: TextStyle(
+        color: widget.isEnabled ? Colors.black : Colors.grey,
+      ),
+      obscureText: widget.obscureText,
+      readOnly: !widget.isEnabled,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -64,4 +71,3 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     );
   }
 }
-

@@ -53,6 +53,7 @@ flutter:
   assets:
     - images/login.jpg
     - images/register.jpg
+    - images/account_icon.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -70,6 +71,9 @@ flutter:
         fonts:
           - asset: fonts/Roboto-Regular.ttf
             weight: 400
+      - family: AppIcons
+        fonts:
+          - asset: fonts/AppIcons.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
