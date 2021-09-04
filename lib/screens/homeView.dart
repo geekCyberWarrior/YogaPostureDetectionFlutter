@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:yoga_posture_detection/screens/basic_level_home.dart';
 import 'package:yoga_posture_detection/screens/edit_profile.dart';
+import 'package:yoga_posture_detection/screens/intermediate_level_home.dart';
 import 'package:yoga_posture_detection/screens/widgets/person.dart';
 
 class HomeView extends StatelessWidget {
@@ -97,7 +99,9 @@ class HomeView extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => BasicLevelHome()));
+                      },
                     ),
                   ),
                 ),
@@ -123,7 +127,9 @@ class HomeView extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => IntermediateLevelHome()));
+                      },
                     ),
                   ),
                 ),
