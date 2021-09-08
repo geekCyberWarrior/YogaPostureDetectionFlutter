@@ -55,6 +55,9 @@ flutter:
     - images/register.jpg
     - images/account_icon.jpg
     - images/account_icon_add.png
+    - images/orange_wave.png
+    - images/purple_wave.png
+    - images/blue_wave.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

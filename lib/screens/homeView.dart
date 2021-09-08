@@ -17,8 +17,11 @@ class HomeView extends StatelessWidget {
           color: Colors.black,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            SizedBox(
+              height: 20.0,
+            ),
             Text(
               "Welcome !",
               style: TextStyle(color: Colors.white),
@@ -34,7 +37,7 @@ class HomeView extends StatelessWidget {
                   ),
                   child: Image.asset(
                     "images/account_icon.jpg",
-                    width: 100,
+                    width: 50,
                   ),
                 ),
                 // Container(
@@ -100,7 +103,10 @@ class HomeView extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => BasicLevelHome()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BasicLevelHome()));
                       },
                     ),
                   ),
@@ -128,12 +134,19 @@ class HomeView extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => IntermediateLevelHome()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => IntermediateLevelHome()));
                       },
                     ),
                   ),
                 ),
               ],
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Image.asset("images/orange_wave.png", fit: BoxFit.cover),
             ),
           ],
         ),
