@@ -58,6 +58,12 @@ flutter:
     - images/orange_wave.png
     - images/purple_wave.png
     - images/blue_wave.png
+    - images/Bhujangasana-pose.jpg
+    - images/shavasana-pose.jpg
+    - images/Tadasana-pose.jpg
+    - images/vrikshasana-pose.jpg
+    - images/padmasana-pose.jpg
+    - images/trikonasana-pose.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

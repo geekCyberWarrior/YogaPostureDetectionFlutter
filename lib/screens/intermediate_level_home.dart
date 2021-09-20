@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yoga_posture_detection/screens/asana_homepage.dart';
 
 class IntermediateLevelHome extends StatelessWidget {
   const IntermediateLevelHome({Key? key}) : super(key: key);
@@ -61,37 +62,79 @@ class IntermediateLevelHome extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(12.0))),
                     child: Column(
                       children: [
-                        Container(
+                        SizedBox(
                           width: 238.0,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 24.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: Border.all(color: Colors.white)),
-                          child: Text(
-                            "Padmasana - lotus pose",
-                            style: TextStyle(
-                              color: Colors.white,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AsanaHome(
+                                            asanaName:
+                                                "Padmasana \n lotus pose",
+                                            asanaLevel:
+                                                "Level - Intermediate",
+                                            asanaDescription:
+                                                "asanaDescription",
+                                            asanaImage:
+                                                "images/padmasana-pose.jpg",
+                                          )));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 24.0),
+                              child: Text(
+                                "Padmasana - lotus pose",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
-                            textAlign: TextAlign.center,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.black,
+                              side: BorderSide(color: Colors.white),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
                           height: 20.0,
                         ),
-                        Container(
+                        SizedBox(
                           width: 238.0,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 24.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.0),
-                              border: Border.all(color: Colors.white)),
-                          child: Text(
-                            "Trikonasana - triangle pose",
-                            style: TextStyle(
-                              color: Colors.white,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AsanaHome(
+                                            asanaName:
+                                                "Trikonasana \n triangle pose",
+                                            asanaLevel:
+                                                "Level - Intermediate",
+                                            asanaDescription:
+                                                "asanaDescription",
+                                            asanaImage:
+                                                "images/trikonasana-pose.jpg",
+                                          )));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 24.0),
+                              child: Text(
+                                "Trikonasana - triangle pose",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
-                            textAlign: TextAlign.center,
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.black,
+                              side: BorderSide(color: Colors.white),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
