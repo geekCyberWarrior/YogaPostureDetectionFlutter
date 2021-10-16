@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yoga_posture_detection/screens/asana_homepage.dart';
+import 'package:camera/camera.dart';
 
 class BasicLevelHome extends StatelessWidget {
-  const BasicLevelHome({Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+  const BasicLevelHome({required this.cameras});
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +80,7 @@ class BasicLevelHome extends StatelessWidget {
                                                 "asanaDescription",
                                             asanaImage:
                                                 "images/Bhujangasana-pose.jpg",
+                                            cameras: cameras,
                                           )));
                             },
                             child: Padding(
@@ -117,6 +120,7 @@ class BasicLevelHome extends StatelessWidget {
                                                 "asanaDescription",
                                             asanaImage:
                                                 "images/shavasana-pose.jpg",
+                                            cameras: cameras,
                                           )));
                             },
                             child: Padding(
@@ -156,6 +160,7 @@ class BasicLevelHome extends StatelessWidget {
                                                 "asanaDescription",
                                             asanaImage:
                                                 "images/Tadasana-pose.jpg",
+                                            cameras: cameras,
                                           )));
                             },
                             child: Padding(
@@ -195,6 +200,7 @@ class BasicLevelHome extends StatelessWidget {
                                                 "asanaDescription",
                                             asanaImage:
                                                 "images/vrikshasana-pose.jpg",
+                                            cameras: cameras,
                                           )));
                             },
                             child: Padding(

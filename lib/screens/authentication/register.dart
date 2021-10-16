@@ -177,12 +177,12 @@ class _RegsiterState extends State<Regsiter> {
     bool shouldNavigate =
         await signIn(_emailNumberField.text, _otpPasswordField.text);
     if (shouldNavigate) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeView(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => HomeView(),
+      //   ),
+      // );
       Fluttertoast.showToast(
           msg: "Login successful!!",
           toastLength: Toast.LENGTH_SHORT,
@@ -250,7 +250,7 @@ class _RegsiterState extends State<Regsiter> {
           fontSize: 16.0);
     };
 
-    final PhoneCodeSent smsSent = (String verId, int resendToken) {
+    final PhoneCodeSent smsSent = (String verId, int? resendToken) {
       this.verificationId = verId;
       setState(() {
         this.codeSent = true;

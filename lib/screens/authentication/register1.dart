@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:yoga_posture_detection/main.dart';
 import 'package:yoga_posture_detection/net/flutterfire.dart';
 import 'package:yoga_posture_detection/screens/authentication/login.dart';
 import 'package:yoga_posture_detection/screens/authentication/number.dart';
@@ -9,9 +10,11 @@ import 'package:yoga_posture_detection/screens/authentication/register_email.dar
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yoga_posture_detection/screens/widgets/textfield.dart';
 import 'package:yoga_posture_detection/screens/widgets/button.dart';
+import 'package:camera/camera.dart';
 
 class Regsiter1 extends StatefulWidget {
-  const Regsiter1({Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+  const Regsiter1({required this.cameras});
 
   @override
   _Regsiter1State createState() => _Regsiter1State();
@@ -96,8 +99,10 @@ class _Regsiter1State extends State<Regsiter1> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => RegsiterEmail(
-                                              name: _nameField.text,
-                                              email: _emailNumberField.text)));
+                                                name: _nameField.text,
+                                                email: _emailNumberField.text,
+                                                cameras: cameras,
+                                              )));
                                 }
                               }
                             },
@@ -121,8 +126,12 @@ class _Regsiter1State extends State<Regsiter1> {
                     ),
                     ButtonWidget(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Login()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Login(
+                                      cameras: cameras,
+                                    )));
                       },
                       text: "LOGIN",
                     ),
@@ -176,7 +185,7 @@ class _Regsiter1State extends State<Regsiter1> {
           fontSize: 16.0);
     };
 
-    final PhoneCodeSent smsSent = (String verId, int resendToken) {
+    final PhoneCodeSent smsSent = (String verId, int? resendToken) {
       this.verificationId = verId;
       setState(() {
         this.codeSent = true;

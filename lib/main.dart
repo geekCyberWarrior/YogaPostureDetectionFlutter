@@ -9,10 +9,21 @@ import 'package:yoga_posture_detection/screens/authentication/login.dart';
 import 'package:yoga_posture_detection/screens/authentication/register1.dart';
 import 'package:yoga_posture_detection/screens/homeView.dart';
 // import 'package:yoga_posture_detection/screens/authentication/phone.dart';
+import 'package:camera/camera.dart';
+
+List<CameraDescription> cameras = [];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  try {
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print(e.code);
+    print(e.description);
+  }
+
   runApp(MyApp());
 }
 
@@ -30,10 +41,14 @@ class MyApp extends StatelessWidget {
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) => snapshot.hasData
-              ? HomeView()
+              ? HomeView(
+                  cameras: cameras,
+                )
               // : Login(),
-              :Regsiter1(),
-              // : RegsiterEmail(email: 'sanjithjadhav@gmail.com'),
+              : Regsiter1(
+                  cameras: cameras,
+                ),
+          // : RegsiterEmail(email: 'sanjithjadhav@gmail.com'),
         ));
   }
 }

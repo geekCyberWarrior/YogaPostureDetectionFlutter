@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:yoga_posture_detection/screens/asana_homepage.dart';
+import 'package:camera/camera.dart';
 
 class IntermediateLevelHome extends StatelessWidget {
-  const IntermediateLevelHome({Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+  const IntermediateLevelHome({required this.cameras});
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +80,7 @@ class IntermediateLevelHome extends StatelessWidget {
                                                 "asanaDescription",
                                             asanaImage:
                                                 "images/padmasana-pose.jpg",
+                                                cameras: cameras,
                                           )));
                             },
                             child: Padding(
@@ -117,6 +120,7 @@ class IntermediateLevelHome extends StatelessWidget {
                                                 "asanaDescription",
                                             asanaImage:
                                                 "images/trikonasana-pose.jpg",
+                                                cameras: cameras,
                                           )));
                             },
                             child: Padding(

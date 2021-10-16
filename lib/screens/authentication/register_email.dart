@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:yoga_posture_detection/main.dart';
 import 'package:yoga_posture_detection/net/flutterfire.dart';
 import 'package:yoga_posture_detection/screens/authentication/login.dart';
 import 'package:yoga_posture_detection/screens/authentication/register1.dart';
@@ -7,13 +8,17 @@ import 'package:yoga_posture_detection/screens/homeView.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yoga_posture_detection/screens/widgets/textfield.dart';
 import 'package:yoga_posture_detection/screens/widgets/button.dart';
+import 'package:camera/camera.dart';
 
 class RegsiterEmail extends StatefulWidget {
   final String name;
   final String email;
+  final List<CameraDescription> cameras;
+
   const RegsiterEmail({
     required this.name,
     required this.email,
+    required this.cameras,
   });
 
   @override
@@ -118,7 +123,9 @@ class _RegsiterEmailState extends State<RegsiterEmail> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => HomeView(),
+                                        builder: (context) => HomeView(
+                                          cameras: cameras,
+                                        ),
                                       ),
                                     );
                                     Fluttertoast.showToast(
@@ -145,7 +152,9 @@ class _RegsiterEmailState extends State<RegsiterEmail> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => Regsiter1(),
+                                        builder: (context) => Regsiter1(
+                                          cameras: cameras,
+                                        ),
                                       ),
                                     );
                                     Fluttertoast.showToast(
@@ -228,7 +237,7 @@ class _RegsiterEmailState extends State<RegsiterEmail> {
           fontSize: 16.0);
     };
 
-    final PhoneCodeSent smsSent = (String verId, int resendToken) {
+    final PhoneCodeSent smsSent = (String verId, int? resendToken) {
       this.verificationId = verId;
       setState(() {
         this.codeSent = true;

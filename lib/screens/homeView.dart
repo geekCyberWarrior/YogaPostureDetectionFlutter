@@ -5,8 +5,12 @@ import 'package:yoga_posture_detection/screens/basic_level_home.dart';
 import 'package:yoga_posture_detection/screens/edit_profile.dart';
 import 'package:yoga_posture_detection/screens/intermediate_level_home.dart';
 import 'package:yoga_posture_detection/screens/widgets/person.dart';
+import 'package:camera/camera.dart';
 
 class HomeView extends StatelessWidget {
+  final List<CameraDescription> cameras;
+  const HomeView({required this.cameras});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +110,9 @@ class HomeView extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => BasicLevelHome()));
+                                builder: (context) => BasicLevelHome(
+                                      cameras: cameras,
+                                    )));
                       },
                     ),
                   ),
@@ -137,7 +143,9 @@ class HomeView extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => IntermediateLevelHome()));
+                                builder: (context) => IntermediateLevelHome(
+                                      cameras: cameras,
+                                    )));
                       },
                     ),
                   ),

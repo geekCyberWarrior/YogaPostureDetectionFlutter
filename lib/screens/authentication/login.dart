@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yoga_posture_detection/main.dart';
 import 'package:yoga_posture_detection/net/flutterfire.dart';
 // import 'package:yoga_posture_detection/screens/authentication/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,9 +8,11 @@ import 'package:yoga_posture_detection/screens/homeView.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yoga_posture_detection/screens/widgets/textfield.dart';
 import 'package:yoga_posture_detection/screens/widgets/button.dart';
+import 'package:camera/camera.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  final List<CameraDescription> cameras;
+  const Login({required this.cameras});
 
   @override
   _LoginState createState() => _LoginState();
@@ -116,7 +119,9 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Regsiter1()));
+                                builder: (context) => Regsiter1(
+                                      cameras: cameras,
+                                    )));
                       },
                       text: "REGISTER",
                     ),
@@ -184,7 +189,9 @@ class _LoginState extends State<Login> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeView(),
+          builder: (context) => HomeView(
+            cameras: cameras,
+          ),
         ),
       );
       Fluttertoast.showToast(
@@ -254,7 +261,7 @@ class _LoginState extends State<Login> {
           fontSize: 16.0);
     };
 
-    final PhoneCodeSent smsSent = (String verId, int resendToken) {
+    final PhoneCodeSent smsSent = (String verId, int? resendToken) {
       this.verificationId = verId;
       setState(() {
         this.codeSent = true;

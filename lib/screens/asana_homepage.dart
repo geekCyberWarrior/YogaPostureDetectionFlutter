@@ -1,18 +1,23 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:yoga_posture_detection/main.dart';
+import 'package:yoga_posture_detection/screens/show_videos.dart';
+import 'package:camera/camera.dart';
 
 class AsanaHome extends StatefulWidget {
   final String asanaName;
   final String asanaLevel;
   final String asanaDescription;
   final String asanaImage;
+  final List<CameraDescription> cameras;
 
   const AsanaHome(
       {required this.asanaName,
       required this.asanaLevel,
       required this.asanaDescription,
-      required this.asanaImage});
+      required this.asanaImage,
+      required this.cameras});
 
   @override
   _AsanaHomeState createState() => _AsanaHomeState();
@@ -136,7 +141,8 @@ class _AsanaHomeState extends State<AsanaHome> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ShowVideos(cameras: cameras,)));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
